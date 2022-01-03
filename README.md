@@ -1,4 +1,4 @@
-# nlg-tools
+# ahn-nlg-tools
 Tools for developing natural language generation systems
 
 This package includes the followings.
@@ -7,8 +7,8 @@ This package includes the followings.
 ## Install
 
 ```bash
-git clone git@github.com:acha21/nlg-tools.git
-cd nlg-tools
+git clone git@github.com:acha21/ahn-nlg-tools.git
+cd ahn-nlg-tools
 python setup.py develop
 ```
 Please install prerequisites as following installation [**instructions**](angt/README.md) for DSTC7 and CbR.
