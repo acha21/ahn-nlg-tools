@@ -11,4 +11,4 @@ git clone git@github.com:acha21/nlg-tools.git
 cd nlg-tools
 python setup.py develop
 ```
-Please install prerequisites as following installation [**instructions**](angt/eval/README.md) for DSTC7 and CbR.
+Please install prerequisites as following installation [**instructions**](angt/README.md) for DSTC7 and CbR.
