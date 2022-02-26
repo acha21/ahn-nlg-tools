@@ -49,6 +49,9 @@ def count_grounded(facts, fresult):
         que = set(result[-2].strip().split())
         #que = result[-2].split()
         res = result[-1]
+
+        lines_count += 1
+
         if res in res_set:
             continue
         else:
@@ -56,7 +59,7 @@ def count_grounded(facts, fresult):
         #res = res.split()
         res = set(res.strip().split())
 
-        lines_count += 1
+
         fact_dict[id] = fact
         grounded = []
         qued = []
@@ -65,6 +68,7 @@ def count_grounded(facts, fresult):
             if x not in stop_words:
                 if x not in stemming(que):
                     if x in stemming(fact):
+                        print(x)
                         grounded.append(x)
                         g_count += 1
                 else:
@@ -73,8 +77,10 @@ def count_grounded(facts, fresult):
         for x in stemming(fact):
             if x not in stop_words:
                 f_count += 1
-
-    precision = g_count / w_count
+    if w_count == 0:
+        precision = g_count / w_count
+    else:
+        precision = 0.0
     recall = g_count / f_count
     f1 = 2 * (precision * recall) / (precision + recall)
 
