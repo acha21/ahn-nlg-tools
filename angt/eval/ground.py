@@ -77,9 +77,10 @@ def count_grounded(facts, fresult):
             if x not in stop_words:
                 f_count += 1
     if w_count == 0:
-        precision = g_count / w_count
-    else:
         precision = 0.0
+    else:
+        precision = g_count / w_count
+
     recall = g_count / f_count
     f1 = 2 * (precision * recall) / (precision + recall)
 
