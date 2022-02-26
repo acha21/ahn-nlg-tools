@@ -68,7 +68,6 @@ def count_grounded(facts, fresult):
             if x not in stop_words:
                 if x not in stemming(que):
                     if x in stemming(fact):
-                        print(x)
                         grounded.append(x)
                         g_count += 1
                 else:
