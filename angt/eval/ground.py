@@ -80,9 +80,14 @@ def count_grounded(facts, fresult):
         precision = 0.0
     else:
         precision = g_count / w_count
-
-    recall = g_count / f_count
-    f1 = 2 * (precision * recall) / (precision + recall)
+    if f_count == 0:
+        recall = 0.0
+    else:
+        recall = g_count / f_count
+    if precision == 0.0 and recall == 0.0:
+        f1 = 0.
+    else:
+        f1 = 2 * (precision * recall) / (precision + recall)
 
     return fact_dict, precision, recall, f1, g_count, w_count, f_count
 
