@@ -7,7 +7,7 @@ import jsonlines
 from nltk.tokenize import TweetTokenizer
 from .preprocessing import clean_str
 from .metrics import unicode, nlp_metrics
-from .ground import count_grounded
+from .ground import count_grounded_v2, count_grounded_v1
 
 tw_tokenizer = TweetTokenizer()
 
@@ -134,6 +134,7 @@ def eval_one_system(
     PRINT=True,
     eval_ground=False,
     eval_gen=True,
+    eval_ground_version="v2",
 ):
     print("evaluating %s" % submitted)
 
@@ -151,6 +152,13 @@ def eval_one_system(
     result = [n_lines]
 
     if eval_ground:
+        if eval_ground_version == 'v2':
+            count_grounded = count_grounded_v2
+        elif eval_ground_version == 'v1':
+            count_grounded = count_grounded_v1
+        else:
+            count_grounded = count_grounded_v2
+        print("eval_ground_version = " + eval_ground_version)
         if NLG_TOOLS_DIR == "":
             raise ValueError("NLG_TOOLS_DIR is not set.")
         facts_dic = get_fact_dict(KNOWLEDGE_PATH, True)
@@ -202,6 +210,7 @@ def eval_all_systems(
     vshuman=False,
     eval_ground=False,
     eval_gen=True,
+    eval_ground_version='v2',
 ):
     # evaluate all systems (*.txt) in each folder `files`
     report_out = []
@@ -233,6 +242,7 @@ def eval_all_systems(
                 PRINT=False,
                 eval_ground=eval_ground,
                 eval_gen=eval_gen,
+                eval_ground_version=eval_ground_version,
             )
             if path_report:
                 with open(path_report, "a") as f:
@@ -254,6 +264,7 @@ def eval_all_systems(
                         PRINT=False,
                         eval_ground=eval_ground,
                         eval_gen=eval_gen,
+                        eval_ground_version=eval_ground_version,
                     )
 
                     if path_report:
@@ -293,6 +304,7 @@ if __name__ == "__main__":
     parser.add_argument("--report", "-o", type=str)
     parser.add_argument("--ground", "-u", action='store_true')
     parser.add_argument("--no_eval_gen", default=False, action='store_true')
+    parser.add_argument("--eval_ground_version", "-e", type=str, default='v2')
 
     args = parser.parse_args()
     print("Args: %s\n" % str(args), file=sys.stderr)
@@ -313,6 +325,7 @@ if __name__ == "__main__":
             vshuman=args.vshuman,
             eval_ground=args.ground,
             eval_gen=not args.no_eval_gen,
+            eval_ground_version=args.eval_ground_version,
         )
     else:
         fname_report = "report_ref%i" % args.n_refs
@@ -338,4 +351,5 @@ if __name__ == "__main__":
             vshuman=args.vshuman,
             eval_ground=args.ground,
             eval_gen=not args.no_eval_gen,
+            eval_ground_version=args.eval_ground_version,
         )

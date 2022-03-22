@@ -19,19 +19,102 @@ def get_stop_words():
     with open(STOPWORD_PATH, "r") as fin:
         for line in fin.readlines():
             s = line.strip()
-            stop_words.append(s)
+            if s != "":
+                stop_words.append(s)
     return stop_words
+
+
+def stemming2(words):
+    if type(words) == str:
+        words = words.strip().split()
+    stemmed = [stemmer.stem(w) for w in words if w.strip() != ""]
+    # stemmed = [w for w in words if w.strip() != ""]
+    return stemmed
 
 
 def stemming(words):
     if type(words) == str:
         words = words.strip().split()
-    #stemmed = [stemmer.stem(w) for w in words]
+    # stemmed = [stemmer.stem(w) for w in words if w.strip() != ""]
     stemmed = [w for w in words if w.strip() != ""]
     return stemmed
 
 
-def count_grounded(facts, fresult):
+def count_grounded_v2(facts, fresult):
+    g_count = 0
+    w_count = 0
+    f_count = 0
+    lines_count = 0
+    fact_dict = dict()
+    stop_words = set(get_stop_words())
+    assert len(facts) == len(fresult)
+
+    res_set = set()
+
+    for i, (fact, result) in enumerate(zip(facts, fresult)):
+
+        fact = fact.strip().split()
+        id = result[0]
+
+        que = result[-2].split()
+        res = result[-1].strip()
+
+        if res in res_set:
+            continue
+        else:
+            res_set.add(res)
+
+        res = res.split()
+
+        fact = fact[:500]
+        que = que[-30:]
+        res = res[:30]
+
+        lines_count += 1
+
+        fact_dict[id] = fact
+        grounded = []
+        qued = []
+
+        fact = stemming2(fact)
+        que = stemming2(que)
+        res = stemming2(res)
+
+        fact = set(fact)
+        que = set(que)
+        res = set(res)
+
+        for x in res:
+            w_count += 1
+            if x not in stop_words:
+                if x not in que:
+                    if x in fact:
+                        grounded.append(x)
+                        g_count += 1
+                else:
+                    qued.append(x)
+
+        for x in fact:
+            if x not in stop_words:
+                f_count += 1
+
+    if w_count == 0:
+        precision = 0.0
+    else:
+        precision = g_count / w_count
+    if f_count == 0:
+        recall = 0.0
+    else:
+        recall = g_count / f_count
+    if precision == 0.0 and recall == 0.0:
+        f1 = 0.
+    else:
+        f1 = 2 * (precision * recall) / (precision + recall)
+
+    return fact_dict, precision, recall, f1, g_count, w_count, f_count
+
+
+def count_grounded_v1(facts, fresult):
     g_count = 0
     w_count = 0
     f_count = 0
@@ -58,7 +141,6 @@ def count_grounded(facts, fresult):
             res_set.add(res)
         #res = res.split()
         res = set(res.strip().split())
-
 
         fact_dict[id] = fact
         grounded = []
@@ -90,4 +172,3 @@ def count_grounded(facts, fresult):
         f1 = 2 * (precision * recall) / (precision + recall)
 
     return fact_dict, precision, recall, f1, g_count, w_count, f_count
-
