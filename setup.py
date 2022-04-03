@@ -19,5 +19,6 @@ setup(
     packages=find_packages(exclude=['docs', 'tests*']),
     python_requries=">=3.6",
     install_requires=reqs,
+    include_package_data=True,
     package_data={"": ['angt/data/cmr/*.txt']}
 )
