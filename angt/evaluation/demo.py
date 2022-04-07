@@ -1,7 +1,7 @@
 # evaluation
 import os
-from angt.eval.metrics import nlp_metrics
-from angt.eval.preprocessing import clean_str
+from angt.evaluation.metrics import nlp_metrics
+from angt.evaluation.preprocessing import clean_str
 from angt import NLG_TOOLS_DIR
 print(NLG_TOOLS_DIR)
 demo_path = os.path.join(NLG_TOOLS_DIR, "data/eval/demo")

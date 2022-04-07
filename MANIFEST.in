@@ -1,0 +1,3 @@
+include angt/data/cmr/*.txt
+include angt/data/eval/demo/*.txt
+include angt/data/eval/keys/*

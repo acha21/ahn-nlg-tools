@@ -20,5 +20,4 @@ setup(
     python_requries=">=3.6",
     install_requires=reqs,
     include_package_data=True,
-    package_data={"": ['angt/data/cmr/*.txt']}
 )

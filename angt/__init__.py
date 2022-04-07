@@ -12,4 +12,6 @@ STOPWORD_PATH = os.path.join(NLG_TOOLS_DIR, "data/cmr/stopwords_700+.txt")
 
 KNOWLEDGE_PATH = os.path.join(NLG_TOOLS_DIR, "data/eval/keys/reddit_wiki_doc.jsonl")
 
-__all__ = ['eval', 'STOPWORD_PATH', 'KNOWLEDGE_PATH', 'NLG_TOOLS_DIR']
+__all__ = ['evaluation', 'STOPWORD_PATH', 'KNOWLEDGE_PATH', 'NLG_TOOLS_DIR']
+
+from . import evaluation
